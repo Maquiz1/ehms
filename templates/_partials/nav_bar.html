@@ -326,7 +326,16 @@
                     <h6 class="m-0">James Bruton</h6>
                 </div>
                 <div class="mx-3 my-2 d-grid">
-                    <a href="login.html" class="btn btn-danger">Logout</a>
+                    <!-- <a href="login.html" class="btn btn-danger"> -->
+                    {% include "registration/_logout.html" %}
+                    <!-- Logout -->
+                    <!-- </a> -->
+                    <!-- {% if user.is_authenticated %}
+                    {% include "registration/_logout.html" %}
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'sign_up' %}">Sign up</a>
+                {% endif %} -->
                 </div>
             </div>
         </div>

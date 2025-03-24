@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path,include
 from clinic import views
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.hospital_dashboard, name="hospital_dashboard"),
+    path("sign_up/", views.sign_up, name="sign_up"),
+    path("accounts/", include("django.contrib.auth.urls")),
     # path("hospital_admin/", views.hospital_admin, name="hospital_admin"),
     # path("medical_dashboard/", views.medical_dashboard, name="medical_dashboard"),
     # path("medical_staff/", views.medical_staff, name="medical_staff"),

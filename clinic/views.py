@@ -1,9 +1,21 @@
-from django.shortcuts import render, redirect
-# from .models import Patient
-# from .forms import PatientForm
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
-def home(request):
-    return render(request, "clinic/home.html", {})
+def hospital_dashboard(request):
+    return render(request, "clinic/hospital_dashboard.html", {})
+
+def sign_up(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect(reverse("hospital_dashboard"))
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/sign_up.html", {"form": form})
 
 
 def hospital_admin(request):

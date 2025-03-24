@@ -1,0 +1,8 @@
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Sign Up" />
+</form>
+<p>
+    <a href="{% url 'hospital_dashboard' %}">Back to dashboard</a>
+</p>

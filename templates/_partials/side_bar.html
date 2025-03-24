@@ -6,7 +6,9 @@
         <img src="{% static 'assets/images/user6.png' %}" class="img-shadow img-3x me-3 rounded-5"
             alt="Hospital Admin Templates">
         <div class="m-0">
-            <h5 class="mb-1 profile-name text-nowrap text-truncate">Nick Gonzalez</h5>
+            <h5 class="mb-1 profile-name text-nowrap text-truncate">
+                Hello, {{ user.username|default:"Guest" }}!
+            </h5>
             <p class="m-0 small profile-name text-nowrap text-truncate">Dept Admin</p>
         </div>
     </div>
@@ -413,7 +415,7 @@
                         <a href="login.html">Login</a>
                     </li>
                     <li>
-                        <a href="signup.html">Signup</a>
+                        <a href="{% url 'sign_up' %}">Signup</a>
                     </li>
                     <li>
                         <a href="forgot-password.html">Forgot Password</a>
