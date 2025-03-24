@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'clinic',  # Add this line to include the clinic app
 ]
 
 MIDDLEWARE = [

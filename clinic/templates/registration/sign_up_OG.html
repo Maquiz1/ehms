@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{% static 'assets/css/main.min.css' %}">
+</head>
+<body class="login-bg">
+    <div class="container">
+        <div class="auth-wrapper">
+            <form method="post">
+                {% csrf_token %}
+                <div class="auth-box">
+                    <a href="{% url 'hospital_dashboard' %}" class="auth-logo mb-4">
+                        <img src="{% static 'assets/images/logo-dark.svg' %}" alt="Logo">
+                    </a>
+                    <h4 class="mb-4">Signup</h4>
+                    {{ form.non_field_errors }}
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Your name <span class="text-danger">*</span></label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Your email <span class="text-danger">*</span></label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password1">Your password <span class="text-danger">*</span></label>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password2">Confirm password <span class="text-danger">*</span></label>
+                        {{ form.password2 }}
+                    </div>
+                    <div class="mb-3 d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Signup</button>
+                        <a href="{% url 'hospital_dashboard' %}" class="btn btn-secondary">Back to dashboard</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
