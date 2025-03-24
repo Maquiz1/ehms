@@ -34,29 +34,47 @@
     <div class="auth-wrapper">
 
       <!-- Form starts -->
-      <form action="https://bootstrapget.com/demos/medflex-medical-admin-template/index.html">
-
+      <form method="post">
+      <!-- <form action="https://bootstrapget.com/demos/medflex-medical-admin-template/index.html"> -->
+        {% csrf_token %}
         <div class="auth-box">
           <a href="index-2.html" class="auth-logo mb-4">
             <img src="{% static 'assets/images/logo-dark.svg' %}" alt="Bootstrap Gallery">
           </a>
 
           <h4 class="mb-4">Signup</h4>
-
+          {{ form.non_field_errors }}
           <div class="mb-3">
             <label class="form-label" for="name">Your name <span class="text-danger">*</span></label>
-            <input type="text" id="name" class="form-control" placeholder="Enter your name">
+            <!-- <input type="text" id="name" class="form-control" placeholder="Enter your name"> -->
+            {{ form.username }}
           </div>
 
           <div class="mb-3">
             <label class="form-label" for="email">Your email <span class="text-danger">*</span></label>
-            <input type="text" id="email" class="form-control" placeholder="Enter your email">
+            <!-- <input type="text" id="email" class="form-control" placeholder="Enter your email"> -->
+            {{ form.email }}
           </div>
 
           <div class="mb-3">
             <label class="form-label" for="pwd">Your password <span class="text-danger">*</span></label>
             <div class="input-group">
-              <input type="password" id="pwd" class="form-control" placeholder="Enter password">
+              <!-- <input type="password" id="pwd" class="form-control" placeholder="Enter password"> -->
+              {{ form.password1 }}
+              <button class="btn btn-outline-secondary" type="button">
+                <i class="ri-eye-line text-primary"></i>
+              </button>
+            </div>
+            <div class="form-text">
+              Your password must be 8-20 characters long.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="pwd">Re - Enter password <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <!-- <input type="password" id="pwd" class="form-control" placeholder="Enter password"> -->
+              {{ form.password2 }}
               <button class="btn btn-outline-secondary" type="button">
                 <i class="ri-eye-line text-primary"></i>
               </button>
