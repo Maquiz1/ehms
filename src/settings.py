@@ -64,6 +64,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'templates',  # Ensure the correct path is included here
+            BASE_DIR / 'clinic/templates',  # App-specific templates directory
         ],
         'APP_DIRS': True,
         'OPTIONS': {
