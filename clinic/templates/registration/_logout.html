@@ -2,5 +2,5 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Logout" />
-    <input type="hidden" name="next" value="{% url 'hospital_dashboard' %}" />
+    <input type="hidden" name="next" value="{% url 'login' %}" />
 </form>
