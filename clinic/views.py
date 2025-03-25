@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.urls import reverse
 from django.contrib.auth.views import LoginView
-from .forms import CustomUserCreationForm, CustomLoginForm
+from .forms import CustomUserCreationForm, CustomLoginForm, PatientForm
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
+from .models import Patient
 
 def hospital_dashboard(request):
     return render(request, "clinic/hospital_dashboard.html", {})
@@ -28,9 +29,9 @@ def medical_dashboard(request):
     return render(request, "clinic/medical_dashboard.html", {})
 
 
-# def patients_list(request):
-#     patients = Patient.objects.all()
-#     return render(request, "clinic/patients_list.html", {"patients": patients})
+def patients_list(request):
+    patients = Patient.objects.all()
+    return render(request, "patients/patients-list.html", {"patients": patients})
 
 
 # def add_patients(request):
@@ -47,3 +48,13 @@ def medical_dashboard(request):
 class CustomLoginView(LoginView):
     template_name = "registration/login.html"
     form_class = CustomLoginForm
+
+def add_patient(request):
+    if request.method == "POST":
+        form = PatientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('patients-list')  # Redirect to the patients list page
+    else:
+        form = PatientForm()
+    return render(request, 'patients/add-patient.html', {'form': form})
