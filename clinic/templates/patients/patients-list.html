@@ -102,9 +102,10 @@
                                                         <img src="{% static 'assets/images/patient.png' %}"
                                                             class="img-shadow img-2x rounded-5 me-1"
                                                             alt="Medical Admin Template">
-                                                            {{ patient.first_name }} {{ patient.last_name }}
+                                                        {{ patient.first_name }} {{ patient.last_name }}
                                                     </td>
-                                                    <td><span class="badge bg-info-subtle text-info">{{ patient.gender|title }}</span></td>
+                                                    <td><span class="badge bg-info-subtle text-info">{{
+                                                            patient.gender|title }}</span></td>
                                                     <td>{{ patient.age }}</td>
                                                     <td>{{ patient.blood_group }}</td>
                                                     <td>
@@ -115,25 +116,79 @@
                                                     <td>{{ patient.address }}</td>
                                                     <td>
                                                         <div class="d-inline-flex gap-1">
-                                                            <button class="btn btn-outline-danger btn-sm"
-                                                                data-bs-toggle="modal" data-bs-target="#delRow">
+                                                            <!-- <a href="{% url 'edit-patient' patient.id %}"
+                                                                class="btn btn-outline-success btn-sm"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Edit Patient Details">
+                                                                <i class="ri-edit-box-line"></i>
+                                                            </a> -->
+                                                            <a href="{% url 'patient-dashboard' patient.id %}"
+                                                                class="btn btn-outline-info btn-sm"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="View Dashboard">
+                                                                <i class="ri-eye-line"></i>
+                                                            </a>
+                                                            <!-- IF JAVASCRIPT USED TO DELETE PATIENT -->
+                                                            <!-- <button class="btn btn-outline-danger btn-sm delete-patient-btn" data-bs-toggle="modal" data-bs-target="#delRow" data-patient-id="{{ patient.id }}">
                                                                 <i class="ri-delete-bin-line"></i>
-                                                            </button>
+                                                            </button> -->
                                                             <a href="{% url 'edit-patient' patient.id %}"
                                                                 class="btn btn-outline-success btn-sm"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top"
                                                                 data-bs-title="Edit Patient Details">
                                                                 <i class="ri-edit-box-line"></i>
                                                             </a>
-                                                            <a href="patient-dashboard.html"
-                                                                class="btn btn-outline-info btn-sm"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                data-bs-title="View Dashboard">
-                                                                <i class="ri-eye-line"></i>
-                                                            </a>
+                                                            <button class="btn btn-outline-danger btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteModal{{ patient.id }}">
+                                                                <i class="ri-delete-bin-line"></i>
+                                                            </button>
                                                         </div>
                                                     </td>
-                                                </tr>                    
+                                                </tr>
+                                                <!-- Modal for deleting the patient -->
+                                                <div class="modal fade" id="deleteModal{{ patient.id }}" tabindex="-1"
+                                                    aria-labelledby="deleteModalLabel{{ patient.id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-sm">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="deleteModalLabel{{ patient.id }}">
+                                                                    Confirm
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete {{ patient.first_name }}
+                                                                {{ patient.last_name }}?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="d-flex justify-content-end gap-2">
+                                                                    <button class="btn btn-outline-secondary"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close">No</button>
+                                                                    <form method="post"
+                                                                        action="{% url 'delete-patient' %}">
+                                                                        {% csrf_token %}
+                                                                        <!-- <input type="hidden" name="patient_id" id="deletePatientId">
+                                                            <button type="submit" class="btn btn-danger">Yes</button> -->
+                                                                        <!-- <input type="hidden" name="patient_id"
+                                                                            id="deletePatientId"> -->
+                                                                        <input type="hidden" name="patient_id"
+                                                                            id="{{ patient.id }}">
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Yes</button>
+                                                                    </form>
+                                                                    <!-- IF JABVASCRIPT USED TO DELETE A PATIENT -->
+                                                                    <!-- <button class="btn btn-danger" data-bs-dismiss="modal"
+                                                            aria-label="Close">Yes</button> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 {% empty %}
                                                 <tr>
                                                     <td colspan="9" class="text-center">No patients found.</td>
@@ -145,7 +200,7 @@
                                     <!-- Table ends -->
 
                                     <!-- Modal Delete Row -->
-                                    <div class="modal fade" id="delRow" tabindex="-1" aria-labelledby="delRowLabel"
+                                    <!-- <div class="modal fade" id="delRow" tabindex="-1" aria-labelledby="delRowLabel"
                                         aria-hidden="true">
                                         <div class="modal-dialog modal-sm">
                                             <div class="modal-content">
@@ -162,14 +217,22 @@
                                                 <div class="modal-footer">
                                                     <div class="d-flex justify-content-end gap-2">
                                                         <button class="btn btn-outline-secondary"
-                                                            data-bs-dismiss="modal" aria-label="Close">No</button>
-                                                        <button class="btn btn-danger" data-bs-dismiss="modal"
-                                                            aria-label="Close">Yes</button>
-                                                    </div>
+                                                            data-bs-dismiss="modal" aria-label="Close">No</button> -->
+                                    <!-- <form method="post" action="{% url 'delete-patient' %}">
+                                                            {% csrf_token %} -->
+                                    <!-- <input type="hidden" name="patient_id" id="deletePatientId">
+                                                            <button type="submit" class="btn btn-danger">Yes</button> -->
+                                    <!-- <input type="hidden" name="patient_id" id="deletePatientId">
+                                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                                        </form> -->
+                                    <!-- IF JABVASCRIPT USED TO DELETE A PATIENT -->
+                                    <!-- <button class="btn btn-danger" data-bs-dismiss="modal"
+                                                            aria-label="Close">Yes</button> -->
+                                    <!-- </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </div>
@@ -199,7 +262,20 @@
     {% include "_partials/footer.html" %}
 </body>
 
+<!-- IF JAVASCRIPT USED TO DELETE PATIENT -->
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-patient-btn");
+        const deletePatientIdInput = document.getElementById("deletePatientId");
 
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const patientId = this.getAttribute("data-patient-id");
+                deletePatientIdInput.value = patientId;
+            });
+        });
+    });
+</script> -->
 <!-- Mirrored from bootstrapget.com/demos/medflex-medical-admin-template/patients-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 12 Mar 2025 16:02:47 GMT -->
 
 </html>

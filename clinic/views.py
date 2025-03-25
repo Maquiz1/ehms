@@ -6,6 +6,8 @@ from .forms import CustomUserCreationForm, CustomLoginForm, PatientForm
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .models import Patient
+from django.contrib import messages
+
 
 def hospital_dashboard(request):
     return render(request, "clinic/hospital_dashboard.html", {})
@@ -66,3 +68,19 @@ def add_patient(request, patient_id=None):
         form = PatientForm(instance=patient)
 
     return render(request, 'patients/add-patient.html', {'form': form, 'patient': patient})
+
+
+def patient_dashboard(request, patient_id=None):
+    patients = Patient.objects.all()
+    return render(request, "patients/patient-dashboard.html", {"patients": patients})
+
+def delete_patient(request):
+    if request.method == "POST":
+        patient_id = request.POST.get("patient_id")
+        try:
+            patient = Patient.objects.get(id=patient_id)
+            patient.delete()
+            messages.success(request, "Patient deleted successfully.")
+        except Patient.DoesNotExist:
+            messages.error(request, "Patient not found.")
+    return redirect("patients-list")
