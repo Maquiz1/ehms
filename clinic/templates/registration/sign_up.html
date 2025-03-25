@@ -33,8 +33,8 @@
     <div class="auth-wrapper">
 
       <!-- Form starts -->
-    <form method="post" action="{% url 'sign_up' %}">
-      <!-- <form action="https://bootstrapget.com/demos/medflex-medical-admin-template/index.html"> -->
+      <form method="post" action="{% url 'sign_up' %}">
+        <!-- <form action="https://bootstrapget.com/demos/medflex-medical-admin-template/index.html"> -->
         {% csrf_token %}
         <div class="auth-box">
           <a href="index-2.html" class="auth-logo mb-4">
@@ -54,7 +54,22 @@
             <!-- <input type="text" id="email" class="form-control" placeholder="Enter your email"> -->
             {{ form.email }}
           </div>
-
+          <div class="mb-3">
+            <label class="form-label" for="first_name">First Name</label>
+            {{ form.first_name }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="last_name">Last Name</label>
+            {{ form.last_name }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="phone_number">Phone Number</label>
+            {{ form.phone_number }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="address">Address</label>
+            {{ form.address }}
+          </div>
           <div class="mb-3">
             <label class="form-label" for="pwd">Your password <span class="text-danger">*</span></label>
             <div class="input-group">

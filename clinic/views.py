@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 def hospital_dashboard(request):
     return render(request, "clinic/hospital_dashboard.html", {})
 
+# /clinic/views.py
 class SignUpView(FormView):
     template_name = "registration/sign_up.html"
     form_class = CustomUserCreationForm
