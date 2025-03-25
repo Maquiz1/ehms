@@ -41,6 +41,24 @@ class PatientForm(forms.ModelForm):
             'mobile_number', 'marital_status', 'occupation', 'blood_group',
             'blood_pressure', 'sugar_level', 'address', 'city', 'state', 'postal_code'
         ]
+        labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'age': 'Age',
+            'gender': 'Gender',
+            'unique_id': 'Create ID',
+            'email': 'Email ID',
+            'mobile_number': 'Mobile Number',
+            'marital_status': 'Marital Status',
+            'occupation': 'Occupation',
+            'blood_group': 'Blood Group',
+            'blood_pressure': 'Blood Pressure',
+            'sugar_level': 'Sugar Level',
+            'address': 'Address',
+            'city': 'City',
+            'state': 'State',
+            'postal_code': 'Postal Code',
+        }
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter First Name'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Last Name'}),

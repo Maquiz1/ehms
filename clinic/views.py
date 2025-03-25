@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.urls import reverse
 from django.contrib.auth.views import LoginView
@@ -49,12 +49,20 @@ class CustomLoginView(LoginView):
     template_name = "registration/login.html"
     form_class = CustomLoginForm
 
-def add_patient(request):
+def add_patient(request, patient_id=None):
+    if patient_id:
+        # If patient_id is provided, fetch the existing patient for editing
+        patient = get_object_or_404(Patient, id=patient_id)
+    else:
+        # Otherwise, create a new patient instance
+        patient = None
+
     if request.method == "POST":
-        form = PatientForm(request.POST)
+        form = PatientForm(request.POST, instance=patient)
         if form.is_valid():
             form.save()
             return redirect('patients-list')  # Redirect to the patients list page
     else:
-        form = PatientForm()
-    return render(request, 'patients/add-patient.html', {'form': form})
+        form = PatientForm(instance=patient)
+
+    return render(request, 'patients/add-patient.html', {'form': form, 'patient': patient})

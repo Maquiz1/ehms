@@ -119,7 +119,7 @@
                                                                 data-bs-toggle="modal" data-bs-target="#delRow">
                                                                 <i class="ri-delete-bin-line"></i>
                                                             </button>
-                                                            <a href="edit-patient.html"
+                                                            <a href="{% url 'edit-patient' patient.id %}"
                                                                 class="btn btn-outline-success btn-sm"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top"
                                                                 data-bs-title="Edit Patient Details">

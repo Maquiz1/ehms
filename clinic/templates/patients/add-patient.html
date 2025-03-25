@@ -1,280 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block content %}
+<!-- App body starts -->
+<div class="app-body">
 
-<!-- Mirrored from bootstrapget.com/demos/medflex-medical-admin-template/add-patient.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 12 Mar 2025 16:02:47 GMT -->
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap Gallery - Medical Admin Templates & Dashboards</title>
-
-    {% include "_partials/head.html" %}
-  </head>
-
-  <body>
-
-    <!-- Page wrapper starts -->
-    <div class="page-wrapper">
-
-      <!-- App header starts -->
-      {% include "_partials/nav_bar.html" %}
-      <!-- App header ends -->
-
-      <!-- Main container starts -->
-      <div class="main-container">
-
-        <!-- Sidebar wrapper starts -->
-        {% include "_partials/side_bar.html" %}
-        <!-- Sidebar wrapper ends -->
-
-        <!-- App container starts -->
-        <div class="app-container">
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="index-2.html">Home</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Add Patient
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Today</button>
-                <button class="btn btn-sm">7d</button>
-                <button class="btn btn-sm">2w</button>
-                <button class="btn btn-sm">1m</button>
-                <button class="btn btn-sm">3m</button>
-                <button class="btn btn-sm">6m</button>
-                <button class="btn btn-sm">1y</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
-          <!-- App Hero header ends -->
-
-          <!-- App body starts -->
-          <div class="app-body">
-
+  <!-- Row starts -->
+  <div class="row gx-3">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">
+            {% if patient %} Edit Patient Details {% else %} Add Patient Details {% endif %}
+          </h5>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{% if patient %} {% url 'edit-patient' patient.id %} {% else %} {% url 'add-patient' %} {% endif %}">
+            {% csrf_token %}
             <!-- Row starts -->
             <div class="row gx-3">
+              {% for field in form %}
+              <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }} {% if field.field.required %}
+                    <span class="text-danger">*</span>
+                    {% endif %}
+                  </label>
+                  {{ field }}
+                  <!-- <input type="text" class="form-control" id="a1" placeholder="Enter First Name"> -->
+                  {% if field.help_text %}
+                  <small class="form-text text-muted">
+                    {{ field.help_text }}
+                  </small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                  <div class="text-danger">
+                    {{ error }}
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}  
               <div class="col-sm-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h5 class="card-title">Add Patient Details</h5>
-                  </div>
-                  <div class="card-body">
-
-                    <!-- Row starts -->
-                    <div class="row gx-3">
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a1">First Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="a1" placeholder="Enter First Name">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a2">Last Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="a2" placeholder="Enter Last Name">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a3">Age <span class="text-danger">*</span></label>
-                          <select class="form-select" id="a3">
-                            <option value="0">Select Age</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="selectGender1">Gender <span
-                              class="text-danger">*</span></label>
-                          <div class="m-0">
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="selectGenderOptions" id="selectGender1"
-                                value="male">
-                              <label class="form-check-label" for="selectGender1">Male</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="selectGenderOptions" id="selectGender2"
-                                value="female">
-                              <label class="form-check-label" for="selectGender2">Female</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a4">Create ID <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="a4" placeholder="Create Unique ID">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a5">Email ID <span class="text-danger">*</span></label>
-                          <input type="email" class="form-control" id="a5" placeholder="Enter Email ID">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a6">Mobile Number <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control" id="a6" placeholder="Enter Mobile Number">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a7">Marital Status</label>
-                          <select class="form-select" id="a7">
-                            <option value="0">Select</option>
-                            <option value="1">Married</option>
-                            <option value="2">Un Married</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a8">Occupation</label>
-                          <select class="form-select" id="a8">
-                            <option value="0">Select</option>
-                            <option value="1">Teacher</option>
-                            <option value="2">Engineer</option>
-                            <option value="3">Business</option>
-                            <option value="4">Bank</option>
-                            <option value="5">Army</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a9">Blood Group <span class="text-danger">*</span></label>
-                          <select class="form-select" id="a9">
-                            <option value="0">Select</option>
-                            <option value="1">A+</option>
-                            <option value="2">A-</option>
-                            <option value="3">B+</option>
-                            <option value="4">B-</option>
-                            <option value="5">O+</option>
-                            <option value="6">O-</option>
-                            <option value="7">AB+</option>
-                            <option value="8">AB-</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a10">Blood Presure</label>
-                          <input type="text" class="form-control" id="a10" placeholder="Enter Blood Presure">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a11">Sugar</label>
-                          <input type="text" class="form-control" id="a11" placeholder="Enter Sugar Levels">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a12">Address</label>
-                          <input type="text" class="form-control" id="a12" placeholder="Enter Address">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a13">City</label>
-                          <input type="text" class="form-control" id="a13" placeholder="Enter City">
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a14">State</label>
-                          <select class="form-select" id="a14">
-                            <option value="0">Select</option>
-                            <option value="1">Alabama</option>
-                            <option value="2">Alaska</option>
-                            <option value="3">Arizona</option>
-                            <option value="4">California</option>
-                            <option value="5">Florida</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-xxl-3 col-lg-4 col-sm-6">
-                        <div class="mb-3">
-                          <label class="form-label" for="a15">Postal Code</label>
-                          <input type="text" class="form-control" id="a15" placeholder="Enter Postal Code">
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div id="dropzone" class="mb-3">
-                          <form action="https://bootstrapget.com/upload" class="dropzone dz-clickable" id="demo-upload">
-                            <div class="dz-message">
-                              <button type="button" class="dz-button">
-                                Click here to upload or Drop your reports here.</button>
-                              <h5>Upload your health reports.</h5>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                      <div class="col-sm-12">
-                        <div class="d-flex gap-2 justify-content-end">
-                          <a href="patients-list.html" type="button" class="btn btn-outline-secondary">
-                            Cancel
-                          </a>
-                          <a href="patients-list.html" type="button" class="btn btn-primary">
-                            Create Patient Profile
-                          </a>
-                        </div>
-                      </div>
+                <div id="dropzone" class="mb-3">
+                  <form action="https://bootstrapget.com/upload" class="dropzone dz-clickable" id="demo-upload">
+                    <div class="dz-message">
+                      <button type="button" class="dz-button">
+                        Click here to upload or Drop your reports here.</button>
+                      <h5>Upload your health reports.</h5>
                     </div>
-                    <!-- Row ends -->
-
-                  </div>
+                  </form>
+                </div>
+              </div>            
+              <div class="col-sm-12">
+                <div class="d-flex gap-2 justify-content-end">
+                  <a href="{% url 'patients-list' %}" type="button" class="btn btn-outline-secondary">
+                    Cancel
+                  </a>
+                  <!-- <a href="patients-list.html" type="button" class="btn btn-primary">
+                    Create Patient Profile{% if patient %} Update Patient {% else %} Add Patient {% endif %}
+                  </a> -->
+                  <input type="submit" class="btn btn-primary" value="{% if patient %} Update Patient Profile {% else %} Create Patient Profile {% endif %}">
+                  <!-- <button type="submit" class="btn btn-primary">Create Patient Profile</button> -->
                 </div>
               </div>
             </div>
             <!-- Row ends -->
-
-          </div>
-          <!-- App body ends -->
-
-          <!-- App footer starts -->
-          <div class="app-footer bg-white">
-            <span>© Medflex admin 2024</span>
-          </div>
-          <!-- App footer ends -->
-
+          </form>
         </div>
-        <!-- App container ends -->
-
       </div>
-      <!-- Main container ends -->
-
     </div>
-    <!-- Page wrapper ends -->
+  </div>
+  <!-- Row ends -->
 
-    <!-- *************
-			************ JavaScript Files *************
-		************* -->
-    {% include "_partials/foot.html" %}
-  </body>
-
-
-<!-- Mirrored from bootstrapget.com/demos/medflex-medical-admin-template/add-patient.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 12 Mar 2025 16:02:47 GMT -->
-</html>
+</div>
+<!-- App body ends -->
+{% endblock content %}

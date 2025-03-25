@@ -10,4 +10,5 @@ urlpatterns = [
     path("login/", CustomLoginView.as_view(), name="login"),
     path('add-patient/', add_patient, name='add-patient'),
     path('patients-list/', patients_list, name='patients-list'),
+    path('edit-patient/<int:patient_id>/', add_patient, name='edit-patient'),  # For editing an existing patient
 ]
