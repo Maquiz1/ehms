@@ -1,7 +1,7 @@
 from django.urls import path, include
 from clinic import views
 from .views import CustomLoginView, SignUpView
-from .views import add_patient,patients_list,delete_patient,patient_dashboard,assign_consultation,consultations_list,delete_consultation,consultation_dashboard  
+from .views import add_patient,patients_list,delete_patient,patient_dashboard,assign_consultation,consultations_list,delete_consultation,doctor_dashboard
 
 urlpatterns = [
     path("", views.hospital_dashboard, name="hospital-dashboard"),
@@ -23,5 +23,6 @@ urlpatterns = [
     path('consultation-list/', consultations_list, name='consultation-list'),
     path('edit-consultation/<int:consultation_id>/', assign_consultation, name='edit-consultation'),  # For editing an existing consultation
     path("delete-consultation/", delete_consultation, name="delete-consultation"),
-    path("consultation-dashboard/<int:consultation_id>/", consultation_dashboard, name="consultation-dashboard"),
+    # path("consultation-dashboard/<int:consultation_id>/", consultation_dashboard, name="consultation-dashboard"),
+    path('doctor-dashboard/', doctor_dashboard, name='doctor-dashboard'),
 ]

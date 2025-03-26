@@ -8,7 +8,11 @@ from django.urls import reverse_lazy
 from .models import Patient
 from django.contrib import messages
 from .models import Patient, Consultation
-
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from .models import Consultation, Staff
 
 def hospital_dashboard(request):
     patients = Patient.objects.all()
@@ -35,8 +39,8 @@ def hospital_admin(request):
     return render(request, "clinic/hospital_admin.html", {})
 
 
-def medical_dashboard(request):
-    return render(request, "clinic/medical-dashboard.html", {})
+# def medical_dashboard(request):
+#     return render(request, "clinic/medical-dashboard.html", {})
 
 def dentist_dashboard(request):
     return render(request, "clinic/dentist-dashboard.html", {})
@@ -102,21 +106,52 @@ def delete_patient(request):
             messages.error(request, "Patient not found.")
     return redirect("patients-list")
 
+@login_required
 def assign_consultation(request):
+    if not request.user.groups.filter(name='Receptionist').exists():
+        raise PermissionDenied("You do not have permission to assign consultations.")
+    
+    receptionist = get_object_or_404(Staff, user=request.user)  # Get the logged-in receptionist
+
     if request.method == "POST":
         form = ConsultationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('consultations-list')  # Redirect to a list of consultations
+            consultation = form.save(commit=False)
+            consultation.created_by = receptionist  # Assign the receptionist
+            consultation.save()
+            return redirect('consultations-list')  # Redirect to the consultations list
     else:
         form = ConsultationForm()
-    return render(request, 'clinic/assign-consultation.html', {'form': form})
+    return render(request, 'consultations/assign-consultation.html', {'form': form})
 
+@login_required
+def medical_dashboard(request):
+     # Get the logged-in user's staff profile
+    staff = Staff.objects.filter(user=request.user, position='doctor').first()
+    if not staff:
+        print(f"403 Error: User {request.user.username} is not a doctor.")
+        return render(request, '403.html', status=403)  # Show a 403 error if the user is not a doctor
+
+    # Get consultations assigned to this doctor
+    consultations = Consultation.objects.filter(staff=staff).order_by('date', 'time')
+    patient_count = consultations.count()  # Get the count of patients
+    context = {      
+        "consultations": consultations,
+        "patient_count": patient_count
+    }
+
+    return render(request, 'clinic/medical-dashboard.html', context)
+
+@login_required
 def consultations_list(request):
+    consultations = Consultation.objects.all()
+    return render(request, 'consultations/consultations-list.html', {'consultations': consultations})
+
+def consultation_dashboard(request):
     consultations = Consultation.objects.all()
     return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
 
-def consultation_dashboard(request):
+def consultation_dashboar(request):
     consultations = Consultation.objects.all()
     return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
 
@@ -124,3 +159,16 @@ def consultation_dashboard(request):
 def delete_consultation(request):
     consultations = Consultation.objects.all()
     return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
+
+@login_required
+def doctor_dashboard(request):
+    # Get the logged-in user's staff profile
+    staff = Staff.objects.filter(user=request.user, position='doctor').first()
+    if not staff:
+        print(f"403 Error: User {request.user.username} is not a doctor.")
+        return render(request, '403.html', status=403)  # Show a 403 error if the user is not a doctor
+
+    # Get consultations assigned to this doctor
+    consultations = Consultation.objects.filter(staff=staff).order_by('date', 'time')
+
+    return render(request, 'clinic/doctor-dashboard.html', {'consultations': consultations})

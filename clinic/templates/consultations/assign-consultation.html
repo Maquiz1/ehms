@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Assign Patient to Doctor</h2>
+    <h2>Assign Patient to Doctor for Consultation</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Assign</button>
+        <button type="submit" class="btn btn-primary">Assign Consultation</button>
     </form>
 </div>
 {% endblock content %}

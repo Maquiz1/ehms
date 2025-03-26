@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1 class="display-4 text-danger">403 Forbidden</h1>
+    <p class="lead">You do not have permission to access this page.</p>
+    <a href="{% url 'hospital-dashboard' %}" class="btn btn-primary mt-3">Go Back to Dashboard</a>
+</div>
+{% endblock content %}
