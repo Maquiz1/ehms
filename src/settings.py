@@ -98,8 +98,8 @@ DATABASES = {
         'NAME': env('DB_NAME'),  # Database name
         'USER': env('DB_USER'),  # Database user
         'PASSWORD': env('DB_PASSWORD'),  # Database password
-        'HOST': env('DB_HOST', default='127.0.0.1'),  # Database host (default: localhost)
-        'PORT': env('DB_PORT', default='3306'),  # Database port (default: 3306)
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),  
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # Enforce strict mode
         },
