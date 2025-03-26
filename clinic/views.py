@@ -10,13 +10,20 @@ from django.contrib import messages
 
 
 def hospital_dashboard(request):
-    return render(request, "clinic/hospital_dashboard.html", {})
+    patients = Patient.objects.all()
+    patient_count = Patient.objects.count()  # Count all patients
+    # patient_count = patients.count()  # Get the count of patients
+    context = {      
+        "patients": patients,
+        "patient_count": patient_count
+    }
+    return render(request, "clinic/hospital-dashboard.html", context)
 
 # /clinic/views.py
 class SignUpView(FormView):
     template_name = "registration/sign_up.html"
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("hospital_dashboard")
+    success_url = reverse_lazy("hospital-dashboard")
 
     def form_valid(self, form):
         user = form.save()  # Save the user

@@ -4,7 +4,7 @@ from .views import CustomLoginView, SignUpView
 from .views import add_patient,patients_list,delete_patient,patient_dashboard
 
 urlpatterns = [
-    path("", views.hospital_dashboard, name="hospital_dashboard"),
+    path("", views.hospital_dashboard, name="hospital-dashboard"),
     path("sign_up/", SignUpView.as_view(), name="sign_up"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("login/", CustomLoginView.as_view(), name="login"),
