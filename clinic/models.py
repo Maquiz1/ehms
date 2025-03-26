@@ -61,3 +61,40 @@ class Patient(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.unique_id})"
+
+class Doctor(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    specialization = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"Dr. {self.first_name} {self.last_name} ({self.specialization})"
+
+class Consultation(models.Model):
+    patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+    staff = models.ForeignKey('Staff', on_delete=models.CASCADE, limit_choices_to={'position': 'doctor'})  # Only allow doctors
+    date = models.DateField()
+    time = models.TimeField()
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.patient} -> {self.staff} on {self.date} at {self.time}"
+
+class Staff(models.Model):
+    POSITION_CHOICES = [
+        ('doctor', 'Doctor'),
+        ('nurse', 'Nurse'),
+        ('receptionist', 'Receptionist'),
+    ]
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    position = models.CharField(max_length=20, choices=POSITION_CHOICES)  # New position field
+    specialization = models.CharField(max_length=100, blank=True, null=True)  # Optional for non-doctors
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.get_position_display()})"

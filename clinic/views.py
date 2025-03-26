@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.urls import reverse
 from django.contrib.auth.views import LoginView
-from .forms import CustomUserCreationForm, CustomLoginForm, PatientForm
+from .forms import CustomUserCreationForm, CustomLoginForm, PatientForm, ConsultationForm
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .models import Patient
 from django.contrib import messages
-from .models import Patient
+from .models import Patient, Consultation
 
 
 def hospital_dashboard(request):
@@ -101,3 +101,26 @@ def delete_patient(request):
         except Patient.DoesNotExist:
             messages.error(request, "Patient not found.")
     return redirect("patients-list")
+
+def assign_consultation(request):
+    if request.method == "POST":
+        form = ConsultationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('consultations-list')  # Redirect to a list of consultations
+    else:
+        form = ConsultationForm()
+    return render(request, 'clinic/assign-consultation.html', {'form': form})
+
+def consultations_list(request):
+    consultations = Consultation.objects.all()
+    return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
+
+def consultation_dashboard(request):
+    consultations = Consultation.objects.all()
+    return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
+
+
+def delete_consultation(request):
+    consultations = Consultation.objects.all()
+    return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
