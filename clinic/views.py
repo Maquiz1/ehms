@@ -71,8 +71,14 @@ def add_patient(request, patient_id=None):
 
 
 def patient_dashboard(request, patient_id=None):
-    patients = Patient.objects.all()
-    return render(request, "patients/patient-dashboard.html", {"patients": patients})
+    if patient_id:
+        # Retrieve the specific patient's details
+        patient = get_object_or_404(Patient, id=patient_id)
+        return render(request, "patients/patient-dashboard.html", {"patient": patient})
+    else:
+        # Handle the case where no patient_id is provided
+        messages.error(request, "No patient selected.")
+        return redirect("patients-list")  # Redirect to the patients list page
 
 def delete_patient(request):
     if request.method == "POST":

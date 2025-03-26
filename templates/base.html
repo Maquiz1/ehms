@@ -47,7 +47,9 @@
             <div class="app-container">
 
                 <!-- App hero header starts -->
+                {% block header %}
                 {% include "_partials/header.html" %}
+                {% endblock header %}
                 <!-- App Hero header ends -->
 
                 {% if messages %}

@@ -4,10 +4,12 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-            <a href="index-2.html">Home</a>
+            <a href="{% url 'hospital_dashboard' %}">Home</a>
         </li>
         <li class="breadcrumb-item text-primary" aria-current="page">
-            Dashboard
+            {% block header %}
+            Error loading Header
+            {% endblock header %}
         </li>
     </ol>
     <!-- Breadcrumb ends -->
