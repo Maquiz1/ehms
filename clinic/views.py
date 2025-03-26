@@ -31,10 +31,13 @@ def medical_dashboard(request):
     return render(request, "clinic/medical_dashboard.html", {})
 
 
+from django.shortcuts import render
+from .models import Patient
+
 def patients_list(request):
     patients = Patient.objects.all()
-    return render(request, "patients/patients-list.html", {"patients": patients})
-
+    patient_count = patients.count()  # Get the count of patients
+    return render(request, "patients/patients-list.html", {"patients": patients, "patient_count": patient_count})
 
 # def add_patients(request):
 #     if request.method == "POST":

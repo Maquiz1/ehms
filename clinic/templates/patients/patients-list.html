@@ -42,7 +42,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title">Patients List</h5>
+                    <h5 class="card-title">Patients List ({{ patients|length }}) </h5>
                     <a href="{% url 'add-patient' %}" class="btn btn-primary ms-auto">Add Patient</a>
                 </div>
                 <div class="card-body">
@@ -73,8 +73,11 @@
                                             class="img-shadow img-2x rounded-5 me-1" alt="Medical Admin Template">
                                         {{ patient.first_name }} {{ patient.last_name }}
                                     </td>
-                                    <td><span class="badge bg-info-subtle text-info">{{
-                                            patient.gender|title }}</span></td>
+                                    <td>
+                                        <span class="badge bg-info-subtle text-info">
+                                            {{ patient.gender|title }}
+                                        </span>
+                                    </td>
                                     <td>{{ patient.age }}</td>
                                     <td>{{ patient.blood_group }}</td>
                                     <td>
