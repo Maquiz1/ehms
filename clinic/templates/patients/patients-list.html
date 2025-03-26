@@ -35,6 +35,15 @@
 
 <!-- App body starts -->
 {% block content %}
+
+<!-- Data Tables -->
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables/dataTables.bs5.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables/dataTables.bs5-custom.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/datatables/buttons/dataTables.bs5-custom.css' %}">
+
+
+
+
 <div class="app-body">
 
     <!-- Row starts -->
@@ -204,6 +213,14 @@
     <!-- Row ends -->
 
 </div>
+
+
+
+    <!-- Data Tables -->
+    <script src="assets/vendor/datatables/dataTables.min.js"></script>
+    <script src="assets/vendor/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="assets/vendor/datatables/custom/custom-datatables.js"></script>
+    
 {% endblock content %}
 <!-- App body ends -->
 

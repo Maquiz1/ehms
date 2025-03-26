@@ -7,6 +7,7 @@ from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .models import Patient
 from django.contrib import messages
+from .models import Patient
 
 
 def hospital_dashboard(request):
@@ -35,11 +36,11 @@ def hospital_admin(request):
 
 
 def medical_dashboard(request):
-    return render(request, "clinic/medical_dashboard.html", {})
+    return render(request, "clinic/medical-dashboard.html", {})
 
+def dentist_dashboard(request):
+    return render(request, "clinic/dentist-dashboard.html", {})
 
-from django.shortcuts import render
-from .models import Patient
 
 def patients_list(request):
     patients = Patient.objects.all()

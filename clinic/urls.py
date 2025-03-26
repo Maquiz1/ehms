@@ -5,6 +5,8 @@ from .views import add_patient,patients_list,delete_patient,patient_dashboard
 
 urlpatterns = [
     path("", views.hospital_dashboard, name="hospital-dashboard"),
+    path("medical-dashboard/", views.medical_dashboard, name="medical-dashboard"),
+    path("dentist-dashboard/", views.dentist_dashboard, name="dentist-dashboard"),
     path("sign_up/", SignUpView.as_view(), name="sign_up"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("login/", CustomLoginView.as_view(), name="login"),
