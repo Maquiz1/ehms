@@ -10,7 +10,8 @@
                 Hello, {{ user.username|default:"Guest" }}!
             </h5>
             <p class="m-0 small profile-name text-nowrap text-truncate">
-                {{ staff.department|default:"No Department Assigned" }}
+                <!-- Department : {{ staff.department|default:"No Department Assigned" }} -->
+                Department : {{ staff.get_department_display|default:"No Department Assigned" }}
             </p>
         </div>
     </div>
