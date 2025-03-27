@@ -72,16 +72,26 @@ class Staff(models.Model):
         ('receptionist', 'Receptionist'),
     ]
 
+    DEPARTMENT_CHOICES = [
+        ('surgeon', 'Surgeon'),
+        ('gynecologist', 'Gynecologist'),
+        ('psychiatrist', 'Psychiatrist'),
+        ('urologist', 'Urologist'),
+        ('paediatrician', 'Paediatrician'),
+        ('opd', 'OPD'),
+    ]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_profile')  # Link to default User model
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     position = models.CharField(max_length=20, choices=POSITION_CHOICES)
+    department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES, blank=True, null=True)  # New department field
     specialization = models.CharField(max_length=100, blank=True, null=True)  # Optional for non-doctors
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.get_position_display()})"
+        return f"{self.first_name} {self.last_name} ({self.get_position_display()} - {self.get_department_display()})"
     
 
 class Consultation(models.Model):

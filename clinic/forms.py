@@ -81,14 +81,18 @@ class PatientForm(forms.ModelForm):
 class ConsultationForm(forms.ModelForm):
     class Meta:
         model = Consultation
-        fields = ['patient', 'staff', 'date', 'time', 'notes']
+        fields = ['patient', 'date', 'time', 'notes', 'status']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'time': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Add any notes'}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Add notes'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Limit staff choices to doctors only
-        self.fields['staff'].queryset = Staff.objects.filter(position='doctor')
+class StaffForm(forms.ModelForm):
+    class Meta:
+        model = Staff
+        fields = ['user', 'first_name', 'last_name', 'position', 'department', 'specialization', 'email', 'phone_number']
+        widgets = {
+            'department': forms.Select(attrs={'class': 'form-control'}),
+        }

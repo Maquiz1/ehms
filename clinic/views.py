@@ -13,6 +13,10 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from .models import Consultation, Staff
+from datetime import datetime
+from django.utils.timezone import now
+from django.utils.timezone import make_aware
+
 
 def hospital_dashboard(request):
     patients = Patient.objects.all()
@@ -129,23 +133,52 @@ def medical_dashboard(request):
      # Get the logged-in user's staff profile
     staff = Staff.objects.filter(user=request.user, position='doctor').first()
     if not staff:
+        # messages.error(request, "You do not have access to the medical dashboard.")
+        # return redirect('hospital-dashboard') 
         print(f"403 Error: User {request.user.username} is not a doctor.")
         return render(request, '403.html', status=403)  # Show a 403 error if the user is not a doctor
 
     # Get consultations assigned to this doctor
     consultations = Consultation.objects.filter(staff=staff).order_by('date', 'time')
     patient_count = consultations.count()  # Get the count of patients
+    
+    # Determine the greeting based on the current time
+    # current_hour = datetime.now().hour
+    current_hour = now().hour
+
+    # print(current_hour)
+    # print(f"Current hour: {current_hour}, Full datetime: {now()}")
+    naive_datetime = datetime.now()  # Naive datetime
+    aware_datetime = make_aware(naive_datetime)  # Convert to timezone-aware datetime
+    current_hour = aware_datetime.hour
+
+    if 5 <= current_hour < 12:
+        greeting = "Good Morning"
+    elif 12 <= current_hour < 17:
+        greeting = "Good Afternoon"
+    elif 17 <= current_hour < 21:
+        greeting = "Good Evening"
+    else:
+        greeting = "Good Night"
+        
     context = {      
         "consultations": consultations,
-        "patient_count": patient_count
+        "patient_count": patient_count,
+        "staff": staff,  # Pass the staff instance to the template
+        "greeting": greeting,  # Pass the greeting to the template
     }
 
     return render(request, 'clinic/medical-dashboard.html', context)
 
 @login_required
 def consultations_list(request):
-    consultations = Consultation.objects.all()
-    return render(request, 'consultations/consultations-list.html', {'consultations': consultations})
+    # Get the logged-in doctor's consultations
+    staff = Staff.objects.filter(user=request.user, position='doctor').first()
+    if not staff:
+        return render(request, '403.html', status=403)
+
+    consultations = Consultation.objects.filter(staff=staff).order_by('date', 'time')
+    return render(request, 'clinic/consultations-list.html', {'consultations': consultations})
 
 def consultation_dashboard(request):
     consultations = Consultation.objects.all()
@@ -172,3 +205,52 @@ def doctor_dashboard(request):
     consultations = Consultation.objects.filter(staff=staff).order_by('date', 'time')
 
     return render(request, 'clinic/doctor-dashboard.html', {'consultations': consultations})
+
+@login_required
+def add_consultation(request):
+    staff = Staff.objects.filter(user=request.user, position='doctor').first()
+    if not staff:
+        return render(request, '403.html', status=403)
+
+    if request.method == 'POST':
+        form = ConsultationForm(request.POST)
+        if form.is_valid():
+            consultation = form.save(commit=False)
+            consultation.staff = staff  # Assign the logged-in doctor
+            consultation.save()
+            return redirect('consultations-list')
+    else:
+        form = ConsultationForm()
+
+    return render(request, 'clinic/add-consultation.html', {'form': form})
+
+@login_required
+def update_consultation(request, consultation_id):
+    staff = Staff.objects.filter(user=request.user, position='doctor').first()
+    if not staff:
+        return render(request, '403.html', status=403)
+
+    consultation = get_object_or_404(Consultation, id=consultation_id, staff=staff)
+
+    if request.method == 'POST':
+        form = ConsultationForm(request.POST, instance=consultation)
+        if form.is_valid():
+            form.save()
+            return redirect('consultations-list')
+    else:
+        form = ConsultationForm(instance=consultation)
+
+    return render(request, 'clinic/update-consultation.html', {'form': form})
+
+@login_required
+def delete_consultation(request, consultation_id):
+    staff = Staff.objects.filter(user=request.user, position='doctor').first()
+    if not staff:
+        return render(request, '403.html', status=403)
+
+    consultation = get_object_or_404(Consultation, id=consultation_id, staff=staff)
+    if request.method == 'POST':
+        consultation.delete()
+        return redirect('consultations-list')
+
+    return render(request, 'clinic/delete-consultation.html', {'consultation': consultation})

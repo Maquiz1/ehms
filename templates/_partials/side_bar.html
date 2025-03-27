@@ -9,7 +9,9 @@
             <h5 class="mb-1 profile-name text-nowrap text-truncate">
                 Hello, {{ user.username|default:"Guest" }}!
             </h5>
-            <p class="m-0 small profile-name text-nowrap text-truncate">Dept Admin</p>
+            <p class="m-0 small profile-name text-nowrap text-truncate">
+                {{ staff.department|default:"No Department Assigned" }}
+            </p>
         </div>
     </div>
     <!-- Sidebar profile ends -->

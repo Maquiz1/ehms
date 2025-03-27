@@ -3,8 +3,8 @@ from .models import Staff, Patient, Consultation
 
 @admin.register(Staff)
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'position', 'specialization', 'email', 'phone_number')
-    list_filter = ('position',)
+    list_display = ('first_name', 'last_name', 'position', 'department', 'specialization', 'email', 'phone_number')
+    list_filter = ('position', 'department')
     search_fields = ('first_name', 'last_name', 'email')
 
 @admin.register(Patient)

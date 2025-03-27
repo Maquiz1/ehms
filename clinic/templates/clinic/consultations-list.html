@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Consultations</h2>
+    <a href="{% url 'add-consultation' %}" class="btn btn-primary mb-3">Add Consultation</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consultation in consultations %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ consultation.patient }}</td>
+                <td>{{ consultation.date }}</td>
+                <td>{{ consultation.time }}</td>
+                <td>{{ consultation.get_status_display }}</td>
+                <td>
+                    <a href="{% url 'update-consultation' consultation.id %}" class="btn btn-sm btn-info">Edit</a>
+                    <form method="post" action="{% url 'delete-consultation' consultation.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No consultations found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
